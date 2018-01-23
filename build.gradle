@@ -15,6 +15,7 @@ allprojects {
 
 subprojects {
     version = '1.0-SNAPSHOT'
+    group 'su.psergeev77'
 }
 
 

@@ -1,3 +1,4 @@
 rootProject.name = 'spring-cloud-sandbox'
 include 'simple-rest-service'
+include 'client-service'
 
