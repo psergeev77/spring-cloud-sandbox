@@ -1,6 +1,7 @@
 package su.psergeev77.service.client.controller;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,12 +84,16 @@ public class ClientControllerTest {
 
     @Test
     public void getClient() throws Exception {
+        MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+                "hal+json",
+                Charset.forName("utf8"));
+
         mockMvc.perform(get("/client/" + this.client.getUserName()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id", is(this.client.getId().intValue())))
-                .andExpect(jsonPath("$.userName", is(this.client.getUserName())))
-                .andExpect(jsonPath("$.email", is(this.client.getEmail())));
+                .andExpect(jsonPath("$.client.id", is(this.client.getId().intValue())))
+                .andExpect(jsonPath("$.client.userName", is(this.client.getUserName())))
+                .andExpect(jsonPath("$.client.email", is(this.client.getEmail())));
     }
 
     @Test

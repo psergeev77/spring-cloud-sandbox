@@ -1,6 +1,7 @@
 package su.psergeev77.service.client.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,12 +20,12 @@ public class ClientController {
     private ClientRepository repository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userName}")
-    public Client get(@PathVariable String userName) {
+    public ClientResource get(@PathVariable String userName) {
         Optional<Client> client = repository.findByUserName(userName);
         if (!client.isPresent()) {
             throw new ClientNotFoundException(userName);
         }
-        return client.get();
+        return new ClientResource(client.get());
 
     }
 
@@ -41,9 +42,7 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<?> add(@RequestBody Client client) {
         Client result = repository.save(client);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/client/{userName}")
-                .buildAndExpand(result.getUserName()).toUri();
-        return ResponseEntity.created(location).build();
+        Link link = new ClientResource(result).getLink("self");
+        return ResponseEntity.created(URI.create(link.getHref())).build();
     }
 }
