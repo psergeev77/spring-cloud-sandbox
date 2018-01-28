@@ -1,7 +1,6 @@
-package su.psergeev77.service.client.controller;
+package su.psergeev77.service.post.controller;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +13,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import su.psergeev77.service.client.ClientServiceConfig;
-import su.psergeev77.service.client.model.Client;
-import su.psergeev77.service.client.repository.ClientRepository;
+import su.psergeev77.service.post.PostServiceConfig;
+import su.psergeev77.service.post.model.Post;
+import su.psergeev77.service.post.repository.PostRepository;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.*;
@@ -33,9 +31,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
  * @author Josh Long
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ClientServiceConfig.class)
+@SpringBootTest(classes = PostServiceConfig.class)
 @WebAppConfiguration
-public class ClientControllerTest {
+public class PostControllerTest {
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
@@ -46,10 +44,10 @@ public class ClientControllerTest {
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
-    private Client client;
+    private Post post;
 
     @Autowired
-    private ClientRepository clientRepository;
+    private PostRepository postRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -70,38 +68,40 @@ public class ClientControllerTest {
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        this.clientRepository.deleteAllInBatch();
+        this.postRepository.deleteAllInBatch();
 
-        this.client = clientRepository.save(new Client("jhoeller","Liam","Smith","jhoeller@gmail.com"));
+        this.post = postRepository.save(new Post("jhoeller", "Test title", "Text 1"));
     }
 
     @Test
-    public void clientNotFound() throws Exception {
-        mockMvc.perform(get("/client/george")
+    public void postNotFound() throws Exception {
+        mockMvc.perform(get("/post/1000")
                 .contentType(contentType))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void getClient() throws Exception {
+    public void getPost() throws Exception {
         MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
                 "hal+json",
                 Charset.forName("utf8"));
 
-        mockMvc.perform(get("/client/" + this.client.getUserName()))
+        mockMvc.perform(get("/post/" + post.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.client.id", is(this.client.getId().intValue())))
-                .andExpect(jsonPath("$.client.userName", is(this.client.getUserName())))
-                .andExpect(jsonPath("$.client.email", is(this.client.getEmail())));
+                .andExpect(jsonPath("$.post.id", is(post.getId().intValue())))
+                .andExpect(jsonPath("$.post.userName", is(post.getUserName())))
+                .andExpect(jsonPath("$.post.title", is(post.getTitle())))
+                .andExpect(jsonPath("$.post.text", is(post.getText())))
+                .andExpect(jsonPath("$.post.date", is(post.getDate().getTime())));
     }
 
     @Test
-    public void createClient() throws Exception {
-        String clientJson = json(new Client("dsyer","Emma","Johnson","dsyer1@yandex.ru"));
-        this.mockMvc.perform(post("/client")
+    public void createPost() throws Exception {
+        String postJson = json(new Post("testClienty", "TestTitle","TestText"));
+        this.mockMvc.perform(post("/post")
                 .contentType(contentType)
-                .content(clientJson))
+                .content(postJson))
                 .andExpect(status().isCreated());
     }
 

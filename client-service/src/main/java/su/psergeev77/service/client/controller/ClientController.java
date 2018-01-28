@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import su.psergeev77.service.client.model.Client;
 import su.psergeev77.service.client.model.ClientNotFoundException;
 import su.psergeev77.service.client.repository.ClientRepository;
