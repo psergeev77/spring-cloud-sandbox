@@ -1,20 +1,14 @@
 package su.psergeev77.service.facade.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import su.psergeev77.service.facade.client.Client;
 import su.psergeev77.service.facade.client.ClientRestClient;
 import su.psergeev77.service.facade.model.Page;
 import su.psergeev77.service.facade.model.PageNotFoundException;
+import su.psergeev77.service.facade.post.PostRestClient;
 
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -22,21 +16,23 @@ import java.util.stream.Collectors;
 public class PageController {
 
     @Autowired
-    private ClientRestClient restClient;
+    private ClientRestClient clientRestClient;
+
+    @Autowired
+    private PostRestClient postRestClient;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{userName}")
-    public PageResource get(@PathVariable String userName) {
-//        Optional<Post> post = Optional.ofNullable(repository.findOne(postId));
-//        if (!post.isPresent()) {
-//            throw new PostNotFoundException(postId);
-//        }
-//        return new PostResource(post.get());
-        Client client = restClient.getClient(userName).getContent();
+    public Page get(@PathVariable String userName) {
+        Client client = clientRestClient.getClient(userName);
         if (client == null) {
             throw new PageNotFoundException(userName);
         }
         Page page = new Page(client);
-        return new PageResource(page);
+
+        List<Page.Post> postList = postRestClient.getPostsForClient(userName);
+        page.setPosts(postList);
+
+        return page;
     }
 
 //    @RequestMapping(method = RequestMethod.GET, value = "/client/{userName}")

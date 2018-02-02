@@ -82,18 +82,14 @@ public class PostControllerTest {
 
     @Test
     public void getPost() throws Exception {
-        MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-                "hal+json",
-                Charset.forName("utf8"));
-
         mockMvc.perform(get("/post/" + post.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.post.id", is(post.getId().intValue())))
-                .andExpect(jsonPath("$.post.userName", is(post.getUserName())))
-                .andExpect(jsonPath("$.post.title", is(post.getTitle())))
-                .andExpect(jsonPath("$.post.text", is(post.getText())))
-                .andExpect(jsonPath("$.post.date", is(post.getDate().getTime())));
+                .andExpect(jsonPath("$.id", is(post.getId().intValue())))
+                .andExpect(jsonPath("$.userName", is(post.getUserName())))
+                .andExpect(jsonPath("$.title", is(post.getTitle())))
+                .andExpect(jsonPath("$.text", is(post.getText())))
+                .andExpect(jsonPath("$.date", is(post.getDate().getTime())));
     }
 
     @Test
