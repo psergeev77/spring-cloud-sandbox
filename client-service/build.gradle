@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 jar {
-    baseName = 'gs-actuator-service'
+    baseName = 'client-service'
     //version =  '0.1.0'
 }
 
