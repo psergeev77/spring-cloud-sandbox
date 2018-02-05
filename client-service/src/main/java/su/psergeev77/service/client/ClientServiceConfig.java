@@ -3,6 +3,7 @@ package su.psergeev77.service.client;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import su.psergeev77.service.client.model.Client;
 import su.psergeev77.service.client.repository.ClientRepository;
@@ -10,6 +11,7 @@ import su.psergeev77.service.client.repository.ClientRepository;
 import java.util.Arrays;
 
 @SpringBootApplication
+@EnableEurekaClient
 public class ClientServiceConfig {
     public static void main(String[] args) {
         SpringApplication.run(ClientServiceConfig.class, args);

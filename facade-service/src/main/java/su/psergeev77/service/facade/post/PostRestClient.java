@@ -8,7 +8,7 @@ import su.psergeev77.service.facade.model.Page;
 
 import java.util.List;
 
-@FeignClient(url = "http://localhost:9020/post", name = "post" )
+@FeignClient(name="post-service", path = "/post")
 public interface PostRestClient {
     @RequestMapping(method = RequestMethod.GET, value = "/client/{userName}")
     List<Page.Post> getPostsForClient(@PathVariable("userName") String userName);
