@@ -11,11 +11,16 @@ allprojects {
     repositories {
         mavenCentral()
     }
+
 }
 
 subprojects {
     version = '1.0-SNAPSHOT'
     group 'su.psergeev77'
+
+    ext {
+        springCloudVersion = 'Edgware.SR1'
+    }
 }
 
 dependencies {

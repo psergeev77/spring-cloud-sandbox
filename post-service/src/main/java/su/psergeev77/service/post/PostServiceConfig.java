@@ -3,6 +3,7 @@ package su.psergeev77.service.post;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import su.psergeev77.service.post.model.Post;
 import su.psergeev77.service.post.repository.PostRepository;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 @SpringBootApplication
+@EnableEurekaClient
 public class PostServiceConfig {
     public static void main(String[] args) {
         SpringApplication.run(PostServiceConfig.class, args);

@@ -18,10 +18,6 @@ jar {
     //version =  '0.1.0'
 }
 
-ext {
-    springCloudVersion = 'Edgware.SR1'
-}
-
 //springBoot {
 //    executable = true
 //}
@@ -30,7 +26,10 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile('org.springframework.cloud:spring-cloud-starter-feign')
-    //compile('com.netflix.feign:feign-jackson:8.18.0')
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    compile('org.springframework.cloud:spring-cloud-starter-hystrix')
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("junit:junit")
 }
